@@ -22,7 +22,7 @@ public class MemberResponse {
         this.Id = member.getId();
         this.user = member.getUser();
         this.team = member.getTeam();
-        this.UserRank = member.getUserRank();
+
 
     }
 
@@ -34,7 +34,7 @@ public class MemberResponse {
         return user;
     }
 
-    public Team getTeam() { // team variable instead of TeamId
+    public Team getTeam() {
         return team;
     }
 

@@ -4,12 +4,11 @@ import com.example.chathealth.team.domain.User;
 import com.example.chathealth.team.domain.UserRepository;
 import com.example.chathealth.team.dto.request.UserCreateRequest;
 import com.example.chathealth.team.dto.request.UserUpdateRequest;
-import com.example.chathealth.team.dto.response.UserResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -27,14 +26,8 @@ public class UserService {
 
     @Transactional
     public void saveUser(UserCreateRequest request){
-        User user = userRepository.save(new User(request.getName(), request.getAge()));
+        userRepository.save(new User(request.getName(), request.getGender() , request.getWeight() , request.getHeight() ));
 
-    }
-    @Transactional(readOnly = true)
-    public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream()
-                .map(UserResponse::new)
-                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -45,14 +38,16 @@ public class UserService {
         User user = userRepository.findById(request.getId())
                 .orElseThrow(IllegalArgumentException::new);
         user.updateName(request.getName()); // 유저의 객체 가져와서 업데이트(User.updateName )
-
     }
     @Transactional
-    public void deleteUser(String name) {
-        User user = userRepository.findByName(name).orElseThrow(IllegalArgumentException::new);
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         userRepository.delete(user);
     }
-
+    public boolean isUserIdDuplicated(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        return user.isPresent();
+    }
 
 
 }

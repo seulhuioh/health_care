@@ -4,15 +4,13 @@ import com.example.chathealth.team.domain.Member;
 import com.example.chathealth.team.domain.MemberRepository;
 import com.example.chathealth.team.domain.TeamRepository;
 import com.example.chathealth.team.domain.UserRepository;
-import com.example.chathealth.team.dto.request.MemberCreateRequest;
-import com.example.chathealth.team.dto.response.MemberResponse;
+import com.example.chathealth.team.dto.request.MemberResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Nodes.collect;
 
 
 @Service
@@ -24,9 +22,12 @@ public class MemberService {
 
     //
     public  MemberService(){
+        teamRepository = null;
+        memberRepository = null;
+        userRepository = null;
     }
     //constructor
-    public MemberService(
+    public MemberService( // need 3 parameter
             MemberRepository memberRepository,
             TeamRepository teamRepository,
             UserRepository userRepository) {
@@ -37,29 +38,23 @@ public class MemberService {
     }
 
 
+
     @Transactional
-    public void saveMember(MemberCreateRequest request){
-    Member member = memberRepository.save(new Member(request.getUserId(),request.getTeamId()));
+    public void addMember(Long userId, Long teamId){
+        Member member = memberRepository.save(new Member(userRepository.findById(userId).orElseThrow(IllegalArgumentException::new),teamRepository.findById(teamId).orElseThrow(IllegalArgumentException::new)));
 
     }
+
     @Transactional(readOnly = true)
-    public List<Member> getMembers() {
-        return memberRepository.findAll().stream()
-                .map(MemberResponse::new))
-                .collect(Collectors.toList());
-    }
+    public List<Member> getMember(Long memberId) { // !! need to update
+        return memberRepository.findAll().stream().collect(Collectors.toList());
 
+    }
 
 
     @Transactional
-    public void updateMember(){
-
-
-    }
-    @Transactional
-    public void deleteMember(){
-
-
+    public void deleteMember(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 
     //read

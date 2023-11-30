@@ -8,30 +8,38 @@ import javax.persistence.*;
 @Entity
 @Table(name = "diet")
 public class Diet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id =null;
+    private Long id =null;
     @ManyToOne //매핑
-    private User user = new User();
-    @Column(nullable = true,name ="user_id" )
-    private Long  UserId =null;
+    private User user ;
 
     @Column(nullable = true,name ="diet" )
     private String  Diet = null;
 
-    protected Diet() {
+    public Diet() {
 
     } // 기본 생성자 -> 새로운 DB삽입시 필요
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
-    public Long getUserId() {
-        return UserId;
+    public User getUser() {
+        return user;
     }
 
     public String getDiet() {
         return Diet;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDiet(String diet) {
+        Diet = diet;
+    }
+
 }

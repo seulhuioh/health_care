@@ -10,26 +10,25 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long Id =null;
-
-
-
+    private Long id =null;
     @ManyToOne //매핑
     private User user = new User();
     @ManyToOne //매핑
     private Team team = new Team();
 
-    @Column(nullable = false, length = 200,name ="team_id" )
-    private Long TeamId =null;
-    @Column(nullable = true, length = 200,name ="user_rank" )
-    private Integer UserRank = null;
-
-    protected Member() {
-
+    public Member() {
     }
 
+
+    public Member(User user, Team team){
+        this.user=user;
+        this.team=team;
+    }
+
+
+
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public User getUser() {
@@ -40,11 +39,11 @@ public class Member {
         return team;
     }
 
-    public Long getTeamId() {
-        return TeamId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getUserRank() {
-        return UserRank;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
